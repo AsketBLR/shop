@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>{{title}}</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/shop.css" rel="stylesheet">
+    <script src="/axios.js"></script>
+</head>
+<body>
+<header>
+    <div class="top-bar">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <img src="/logo.png" alt="eshop">
+                </a>
+            </div>
+            <div class="search-form">
+                <form action="">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Найти ..."
+                               aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                            <span data-feather="search"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="right-bar">
+                <div class="right-bar-content">
+                    {{#if currentUser}}
+                        <button class="flat-button"><span data-feather="heart"></span></button>
+                        <span class="counter">2</span>
+                        <button class="flat-button"><span data-feather="user"></span></button>
+                        <div class="shopping">
+                            <a href="/shop/cart" class="flat-button"><span data-feather="shopping-cart"></span></a>
+                            <div class="small-shopping-cart">
+                                <div class="small-shopping-cart-header align-space-between">
+                                    <span class="cart-count">{{currentUser.cart.length}} товара</span>
+                                    <a href="#">Просмотр</a>
+                                </div>
+                                <div class="small-shopping-cart-content">
+                                    <ul>
+                                        {{#if currentUser.cart}}
+                                            {{#each currentUser.cart}}
+                                                <li class="align-space-between">
+                                                    <div class="text-content">
+                                                        <a href="#">
+                                                            {{this.product.title}}
+                                                        </a>
+                                                        <p>{{this.count}} x {{this.product.price}} BYN</p>
+                                                        <button class="flat-button">
+                                                            <span data-feather="x-circle"></span>
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="img-cont">
+                                                            <img src="/img/{{this.product.images.[0]}}" alt="">
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            {{/each}}
+                                        {{/if}}
+                                    </ul>
+                                </div>
+                                <div class="small-shopping-cart-footer">
+                                    <div class="total align-space-between">
+                                        <span>Итого</span>
+                                        <span class="small-cart-total">12345 BYN</span>
+                                    </div>
+                                    <a href="#" class="btn buy-button">Оформить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="counter cart-icon-count">{{currentUser.cart.length}}</span>
+                        <form action="/shop/logout" method="post">
+                            <button class="flat-button" type="submit"><span data-feather="log-out"></span></button>
+                        </form>
+                    {{else}}
+                        <a href="/shop/login"  class="flat-button"><span data-feather="log-in"></span></a>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-bar">
+        <div class="container">
+            <ul class="main-menu">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Product</a></li>
+                <li><a href="#">Service</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Pages</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="breadcrumbs-section">
+    <div class="container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Library</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{{{body}}}
+<footer>
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+            <div class="col-lg-5">
+                <div class="footer-about">
+                    <img src="/logo2.png" alt="logo">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur..</p>
+                    <p class="phone">+0123 456 789</p>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <h4>Information</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Faq</a></li>
+                    <li><a href="#">Terms &amp; Conditions</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="#">Payment Methods</a></li>
+                    <li><a href="#">Money-back</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3">
+                <h4>Contacts</h4>
+                <ul>
+                    <li>NO. 342 - London Oxford Street.</li>
+                    <li>012 United Kingdom.</li>
+                    <li>info@info.info</li>
+                    <li>+032 3456 7890</li>
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        <div class="container">
+            <p>Copyright © 2021   -  All Rights Reserved.</p>
+            <img src="/payments.png" alt="#">
+        </div>
+    </div>
+</footer>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/feather.js"></script>
+<script>
+    feather.replace()
+    const header = document.body.querySelector('header');
+    const rightBar = document.body.querySelector('div.right-bar-content');
+    const rightBarTopContainer = document.body.querySelector('div.right-bar');
+    const bottomBar = document.body.querySelector('div.bottom-bar .container');
+    window.addEventListener('scroll', function() {
+        if(pageYOffset > 180){
+            rightBar.remove();
+            bottomBar.append(rightBar);
+            header.classList.add('sticky');
+        } else {
+            rightBar.remove()
+            rightBarTopContainer.append(rightBar);
+            header.classList.remove('sticky');
+        }
+    });
+</script>
+</body>
+</html>

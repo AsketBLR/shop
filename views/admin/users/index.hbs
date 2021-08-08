@@ -1,0 +1,61 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>email</th>
+        <th>role</th>
+        <th>action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each users}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.role}}</td>
+            <td>
+                <form action="/admin/users/delete" method="post" class="delete-user">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a href="/admin/users/{{this.id}}" class="btn btn-outline-secondary">
+                            <span data-feather="eye"></span>
+                        </a>
+                        <a href="" class="btn btn-outline-secondary">
+                            <span data-feather="edit-2"></span>
+                        </a>
+                        <button type="submit" class="btn btn-outline-secondary">
+                            <input type="hidden" name="id" value="{{this.id}}">
+                            <span data-feather="trash"></span>
+                        </button>
+                    </div>
+                </form>
+
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+<script>
+    const forms = document.body.querySelectorAll('form.delete-user');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(event){
+            event.preventDefault()
+            Swal.fire({
+                title: 'Вы уверены?',
+                text: "Подтвердите удаление пользователя",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Да, удалить!',
+                cancelButtonText: 'Нет, отменить'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                   this.submit();
+                }
+            })
+        })
+    })
+</script>
+{{> pagination }}

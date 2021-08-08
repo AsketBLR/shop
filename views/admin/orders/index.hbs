@@ -1,0 +1,33 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>price</th>
+        <th>user</th>
+        <th>action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each orders}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.total}}</td>
+            <td>{{this.user.name}}</td>
+            <td>
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-secondary">
+                        <span data-feather="eye"></span>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <span data-feather="edit-2"></span>
+                    </button>
+                    <a href="/admin/products/remove/{{this.id}}" class="btn btn-outline-secondary">
+                        <span data-feather="trash"></span>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+{{> pagination }}

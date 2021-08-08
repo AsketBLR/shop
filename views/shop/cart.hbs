@@ -1,0 +1,104 @@
+<div class="container">
+    <form action="/shop/cart/order" method="post">
+<table class="table cart" >
+    <thead>
+        <tr>
+            <th>product</th>
+            <th>name</th>
+            <th>price</th>
+            <th>quantity</th>
+            <th>total</th>
+            <th>remove</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    {{#each cart}}
+        <input type="hidden" name="id" value="{{this.product.id}}">
+        <tr>
+            <td><img src="/img/{{this.product.images.[0]}}"></td>
+            <td>{{this.product.title}}</td>
+            <td>{{this.product.price}} BYN</td>
+            <td>
+                <div class="input-group mb-3" style="width: 200px">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary button-minus" data-id="{{this.product.id}}" type="button">-</button>
+                    </div>
+                    <input type="number" class="form-control" name="count"  aria-label="count" value="{{this.count}}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" data-id="{{this.product.id}}" type="button">+</button>
+                    </div>
+                </div>
+            </td>
+            <td class="sub-total">
+                {{multiply this.product.price this.count}}
+            </td>
+            <td>
+                <button type="button" class="flat-button remove-product" data-id="{{this.product.id}}"><span data-feather="trash-2"></span></button>
+
+            </td>
+        </tr>
+    {{/each}}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="total">Total: {{cartTotal cart}}</td>
+            <td></td>
+        </tr>
+    </tbody>
+
+</table>
+        <button type="submit" class="btn btn-lg btn-info">Оформить</button>
+        </form>
+</div>
+<script>
+    document.body.querySelectorAll('button.remove-product')
+    .forEach(button => {
+        button.addEventListener('click', function (){
+            axios.post('/shop/cart/remove', {
+               id: parseInt(this.dataset.id)
+            })
+            .then( (response)=> {
+                if(response.status === 200){
+                    this.closest('tr').remove()
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        })
+    })
+
+    document.body.querySelectorAll('button.button-minus')
+    .forEach(button => {
+        button.addEventListener('click', function (){
+            const input = this.closest('td').querySelector('input');
+            let count =  parseInt(input.value) - 1
+            if(count === 0){
+                return
+            }
+            axios.post('/shop/cart/change', {
+                id: parseInt(this.dataset.id),
+                count
+            })
+            .then( (response)=> {
+                if(response.status === 200){
+                    input.value = String(count);
+                    const subTotal = this.closest('tr').querySelector('td.sub-total');
+                    subTotal.textContent = String(response.data.item.product.price * count);
+
+                    let total = 0;
+                    response.data.cart.forEach(item => {
+                        total += item.product.price * item.count;
+                    })
+                    document.body.querySelector('td.total').textContent = `Total: ${total}`;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        })
+    })
+</script>

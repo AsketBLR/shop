@@ -1,0 +1,205 @@
+<div class="row">
+    <div class="col-lg-3">
+        <div class="small-box bg-success">
+            <div class="top">
+                <div class="inner">
+                    <h3>{{count.users}}</h3>
+                    <p>Посещений за месяц</p>
+                </div>
+                <div class="icon">
+                    <span data-feather="users"></span>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="/admin/users" class="small-box-footer">Подробнее <span
+                        data-feather="arrow-right-circle"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="small-box bg-danger">
+            <div class="top">
+                <div class="inner">
+                    <h3>{{count.users}}</h3>
+                    <p>Пользователей за месяц</p>
+                </div>
+                <div class="icon">
+                    <span data-feather="user-plus"></span>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="/admin/users" class="small-box-footer">Подробнее <span
+                        data-feather="arrow-right-circle"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="small-box bg-secondary">
+            <div class="top">
+                <div class="inner">
+                    <h3>{{count.orders}}</h3>
+                    <p>Заказов за месяц</p>
+                </div>
+                <div class="icon">
+                    <span data-feather="shopping-cart"></span>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="/admin/orders" class="small-box-footer">Подробнее <span
+                        data-feather="arrow-right-circle"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="small-box bg-info">
+            <div class="top">
+                <div class="inner">
+                    <h3>{{count.products}}</h3>
+                    <p>Всего продуктов</p>
+                </div>
+                <div class="icon">
+                    <span data-feather="shopping-bag"></span>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="/admin/products" class="small-box-footer">Подробнее <span
+                        data-feather="arrow-right-circle"></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="dashboard-card">
+            <h4>Статистика за пол года</h4>
+            <canvas id="orders-chart" width="300" height="200"></canvas>
+        </div>
+        <script>
+            const ctx = document.getElementById('orders-chart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: JSON.parse('{{{chart.labels}}}'),
+                    datasets: [{
+                        label: 'Покупок в месяц',
+                        data: JSON.parse('{{chart.orders}}'),
+                        borderColor: 'red',
+                        borderWidth: 2,
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.2
+                    },
+                    {
+                        label: 'Посетителей в месяц',
+                        data: JSON.parse('{{chart.views}}'),
+                        borderColor: 'green',
+                        borderWidth: 2,
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.2
+                    }]
+                },
+            });
+        </script>
+    </div>
+    <div class="col-lg-6">
+        <div class="dashboard-card">
+            <h4>Заказы для обработки</h4>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>total</th>
+                    <th>user</th>
+                    <th>count</th>
+                    <th>work</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {{#each processingOrders}}
+                        <tr>
+                            <td>{{this.id}}</td>
+                            <td>{{this.total}}</td>
+                            <td>{{this.user.email}}</td>
+                            <td>{{this.products.length}}</td>
+                            <td><a href="#" class="btn btn-primary btn-sm">Обработать</a></td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="dashboard-card">
+            <h4>Последние продукты</h4>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>title</th>
+                    <th>price</th>
+                    <th>action</th>
+                </tr>
+                </thead>
+                <tbody>
+                 {{#each lastProducts}}
+                     <tr>
+                         <td>{{this.id}}</td>
+                         <td>{{this.title}}</td>
+                         <td>{{this.price}}</td>
+                         <td>
+                             <div class="btn-group btn-group-sm" role="group">
+                                 <a href="/admin/products/{{this.id}}" class="btn btn-outline-secondary">
+                                     <span data-feather="eye"></span>
+                                 </a>
+                                 <a href="/admin/products/edit/{{this.id}}"  class="btn btn-outline-secondary">
+                                     <span data-feather="edit-2"></span>
+                                 </a>
+                             </div>
+                         </td>
+                     </tr>
+                 {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="dashboard-card">
+            <h4>Последние пользователи</h4>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>email</th>
+                    <th>orders</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each lastUsers}}
+                    <tr>
+                        <td>{{this.id}}</td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.orders.length}}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="/admin/users/{{this.id}}" class="btn btn-outline-secondary">
+                                    <span data-feather="eye"></span>
+                                </a>
+                                <a href="/admin/users/edit/{{this.id}}"  class="btn btn-outline-secondary">
+                                    <span data-feather="edit-2"></span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

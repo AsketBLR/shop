@@ -1,0 +1,11 @@
+<dl>
+    <dt>Имя</dt>
+    <dd>{{user.name}}</dd>
+    <dt>Email</dt>
+    <dd>{{user.email}}</dd>
+    <dt>Доступ</dt>
+    <dd>{{user.role}}</dd>
+    <dt>Регистрация</dt>
+    <dd>{{user.createdAt}}</dd>
+    {{> address address=user.address}}
+</dl>
